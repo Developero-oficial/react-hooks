@@ -15,17 +15,26 @@ const initialState = {
   },
 };
 
+const reducer = (state, action) => {
+  if (action.type === 'UPDATE_NAME') {
+    return {...state, name: action.payload.name};
+  }
+
+  return state;
+};
+
 export const Example = () => {
-  const [user, setUser] = React.useState(initialState);
+  const [user, dispatch] = React.useReducer(reducer, initialState);
 
   React.useEffect(() => {
-    setUser({
-      ...user,
-      foo: {
-        ...user.foo,
-        foo1: {...user.foo.foo1, foo2: {...user.foo.foo1.foo2, name: 'test'}},
+    const action = {
+      type: 'UPDATE_NAME',
+      payload: {
+        name: 'john doe',
       },
-    });
+    };
+
+    dispatch(action);
   }, []);
 
   return `Example: ${JSON.stringify(user)}`;
