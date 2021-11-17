@@ -4,14 +4,26 @@ import {Button} from './button';
 import {ThemeContext} from '../theme-context';
 import {themes} from '../themes';
 
-export const UseContextPage = () => {
-  const [currentTheme, setCurrentTheme] = React.useState(themes.dark);
+const reducer = (state, action) => {
+  if (action.type === 'SET_CURRENT_THEME') {
+    return action.payload;
+  }
 
-  const handleClick = React.useCallback(theme => setCurrentTheme(theme), []);
+  // font-size...
+
+  // border size...
+
+  // N style change...
+
+  return state;
+};
+
+export const UseContextPage = () => {
+  const [currentTheme, dispatch] = React.useReducer(reducer, themes.dark);
 
   const value = {
     theme: currentTheme,
-    setCurrentTheme,
+    dispatch,
   };
 
   return (
@@ -21,8 +33,18 @@ export const UseContextPage = () => {
 
       <ThemeContext.Provider value={value}>
         <Button>Ligth theme</Button>
-        <Button onClick={() => handleClick(themes.dark)}>Dark theme</Button>
-        <Button onClick={() => handleClick(themes.vaporwave)}>
+        <Button
+          onClick={() =>
+            dispatch({type: 'SET_CURRENT_THEME', payload: themes.dark})
+          }
+        >
+          Dark theme
+        </Button>
+        <Button
+          onClick={() =>
+            dispatch({type: 'SET_CURRENT_THEME', payload: themes.vaporwave})
+          }
+        >
           Vaporware theme
         </Button>
       </ThemeContext.Provider>

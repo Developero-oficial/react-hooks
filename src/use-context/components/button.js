@@ -3,10 +3,10 @@ import {ThemeContext} from '../theme-context';
 import {themes} from '../themes';
 
 export const Button = props => {
-  const {setCurrentTheme, theme} = React.useContext(ThemeContext);
+  const {dispatch, theme} = React.useContext(ThemeContext);
 
   const handleClickDefault = () => {
-    setCurrentTheme(themes.light);
+    dispatch({type: 'SET_CURRENT_THEME', payload: themes.light});
   };
 
   const handleClick = props.onClick ? props.onClick : handleClickDefault;
