@@ -2,41 +2,9 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React from 'react';
 
-const initialState = [
-  {
-    id: 1,
-    title: 'terminar esta sección',
-    isDone: false,
-  },
-];
-
-const reducer = (state, action) => {
-  if (action.type === 'ADD_TODO_ITEM') {
-    const {id, title, isDone} = action.payload;
-    return [...state, {id, title, isDone}];
-  }
-
-  if (action.type === 'TOOGLE_TODO_ITEM') {
-    const {id: inputId} = action.payload;
-    const newState = state.map(({id, title, isDone}) => {
-      if (id === inputId) {
-        return {
-          title,
-          id,
-          isDone: !isDone,
-        };
-      }
-      return {
-        title,
-        id,
-        isDone,
-      };
-    });
-    return newState;
-  }
-
-  return state;
-};
+import {initialState} from '../initial-state';
+import {actionAddTodo, actionToogleTodoItem} from '../actions';
+import {reducer} from '../reducer';
 
 export const Todo = () => {
   const [todoText, setTodoText] = React.useState('');
@@ -45,27 +13,17 @@ export const Todo = () => {
   const handleChange = ({target}) => setTodoText(target.value);
 
   const handleClick = () => {
-    const action = {
-      type: 'ADD_TODO_ITEM',
-      payload: {
+    dispatch(
+      actionAddTodo({
         id: todoState.length + 1,
         title: todoText,
-        isDone: false,
-      },
-    };
-
-    dispatch(action);
+      }),
+    );
     setTodoText('');
   };
 
   const toogleTodoItem = id => {
-    const action = {
-      type: 'TOOGLE_TODO_ITEM',
-      payload: {
-        id,
-      },
-    };
-    dispatch(action);
+    dispatch(actionToogleTodoItem(id));
   };
 
   return (
