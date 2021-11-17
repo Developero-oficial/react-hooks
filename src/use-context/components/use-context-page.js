@@ -4,15 +4,28 @@ import {Button} from './button';
 import {ThemeContext} from '../theme-context';
 import {themes} from '../themes';
 
-export const UseContextPage = () => (
-  <>
-    <h2>Hook useContext</h2>
-    <h3>Ejemplo en componente clase</h3>
+export const UseContextPage = () => {
+  const [currentTheme, setCurrentTheme] = React.useState(themes.dark);
 
-    <ThemeContext.Provider value={themes.vaporwave}>
-      <Button>Ligth theme</Button>
-      <Button>Dark theme</Button>
-      <Button>Vaporware theme</Button>
-    </ThemeContext.Provider>
-  </>
-);
+  const handleClick = React.useCallback(theme => setCurrentTheme(theme), []);
+
+  const value = {
+    theme: currentTheme,
+    setCurrentTheme,
+  };
+
+  return (
+    <>
+      <h2>Hook useContext</h2>
+      <h3>Ejemplo</h3>
+
+      <ThemeContext.Provider value={value}>
+        <Button>Ligth theme</Button>
+        <Button onClick={() => handleClick(themes.dark)}>Dark theme</Button>
+        <Button onClick={() => handleClick(themes.vaporwave)}>
+          Vaporware theme
+        </Button>
+      </ThemeContext.Provider>
+    </>
+  );
+};
