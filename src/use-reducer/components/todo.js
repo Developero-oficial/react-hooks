@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import React from 'react';
 
 const initialState = [
@@ -12,6 +14,25 @@ const reducer = (state, action) => {
   if (action.type === 'ADD_TODO_ITEM') {
     const {id, title, isDone} = action.payload;
     return [...state, {id, title, isDone}];
+  }
+
+  if (action.type === 'TOOGLE_TODO_ITEM') {
+    const {id: inputId} = action.payload;
+    const newState = state.map(({id, title, isDone}) => {
+      if (id === inputId) {
+        return {
+          title,
+          id,
+          isDone: !isDone,
+        };
+      }
+      return {
+        title,
+        id,
+        isDone,
+      };
+    });
+    return newState;
   }
 
   return state;
@@ -37,6 +58,16 @@ export const Todo = () => {
     setTodoText('');
   };
 
+  const toogleTodoItem = id => {
+    const action = {
+      type: 'TOOGLE_TODO_ITEM',
+      payload: {
+        id,
+      },
+    };
+    dispatch(action);
+  };
+
   return (
     <>
       <p>
@@ -45,9 +76,17 @@ export const Todo = () => {
         <button onClick={handleClick}>Agregar</button>
       </p>
       <h2>Listado</h2>
-      {todoState.map(({id, title}) => (
+      {todoState.map(({id, title, isDone}) => (
         <ul key={id}>
-          <li>{title}</li>
+          <li
+            style={{
+              cursor: 'pointer',
+              textDecoration: isDone ? 'line-through' : 'inherit',
+            }}
+            onClick={() => toogleTodoItem(id)}
+          >
+            {title}
+          </li>
         </ul>
       ))}
     </>
