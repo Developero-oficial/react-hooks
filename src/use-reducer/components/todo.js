@@ -8,7 +8,12 @@ const initialState = [
   },
 ];
 
-const reducer = state => {
+const reducer = (state, action) => {
+  if (action.type === 'ADD_TODO_ITEM') {
+    const {id, title, isDone} = action.payload;
+    return [...state, {id, title, isDone}];
+  }
+
   return state;
 };
 
@@ -18,12 +23,26 @@ export const Todo = () => {
 
   const handleChange = ({target}) => setTodoText(target.value);
 
+  const handleClick = () => {
+    const action = {
+      type: 'ADD_TODO_ITEM',
+      payload: {
+        id: todoState.length + 1,
+        title: todoText,
+        isDone: false,
+      },
+    };
+
+    dispatch(action);
+    setTodoText('');
+  };
+
   return (
     <>
       <p>
         Nuevo TODO:
         <input type="text" value={todoText} onChange={handleChange} />
-        <button>Agregar</button>
+        <button onClick={handleClick}>Agregar</button>
       </p>
       <h2>Listado</h2>
       {todoState.map(({id, title}) => (
