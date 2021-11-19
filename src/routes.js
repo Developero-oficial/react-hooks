@@ -6,6 +6,7 @@ import {UseMemoPage} from './use-memo';
 import {UseReducerPage} from './use-reducer';
 import {UseContextPage} from './use-context';
 import {UseRefPage} from './use-ref';
+import {CustomHookPage} from './custom-hook';
 
 export const routes = [
   {
@@ -47,5 +48,10 @@ export const routes = [
     path: '/use-ref',
     label: 'useRef',
     Component: UseRefPage,
+  },
+  {
+    path: '/custom-hook',
+    label: 'Custom Hook',
+    Component: CustomHookPage,
   },
 ];
